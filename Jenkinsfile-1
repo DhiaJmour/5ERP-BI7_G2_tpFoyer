@@ -6,24 +6,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Récupère le code depuis votre dépôt Git
-                git branch: 'main', url: 'https://github.com/DhiaJmour/5ERP-BI7_G2_tpFoyer.git'
-            }
-        }
-        stage('Build') {
-            steps {
-                // Construit le projet en utilisant Maven
-                sh "${MAVEN_HOME}/bin/mvn clean install"
-            }
-        }
-        stage('Test') {
-            steps {
-                // Exécute les tests
-                sh "${MAVEN_HOME}/bin/mvn test"
-            }
-        }
+        
         stage('Scan') {
             steps {
                 withSonarQubeEnv(installationName: 'sq2' ){
