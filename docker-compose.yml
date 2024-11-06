@@ -1,13 +1,13 @@
 version: "3"
 services:
-  spring-kaddem:
+  spring-tpfoyer:
     image: oumaimach1234/tpfoyer
     ports:
       - "8089:8089"
     networks:
-      - foyer
+      - foyerr
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb/projDevOps
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb/db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     depends_on:
@@ -18,9 +18,10 @@ services:
     volumes:
       -  /home/mysql/oumaimadata:/var/lib/mysql:rw
     networks:
-      - foyer
+      - foyerr
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=projDevOps
+      - MYSQL_DATABASE=db
+
 networks:
-  foyer:
+  foyerr:
