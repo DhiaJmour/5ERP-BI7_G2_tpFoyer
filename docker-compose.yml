@@ -5,7 +5,7 @@ services:
     ports:
       - "8089:8089"
     networks:
-      - kaddem
+      - foyer
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb/projDevOps
       SPRING_DATASOURCE_USERNAME: root
@@ -18,7 +18,7 @@ services:
     volumes:
       -  /home/mysql/rakidata:/var/lib/mysql:rw
     networks:
-      - kaddem
+      - foyer
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=projDevOps
