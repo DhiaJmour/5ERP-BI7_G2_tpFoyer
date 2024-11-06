@@ -16,9 +16,11 @@ services:
   mysqldb:
     image: mysql:8
     volumes:
-      -  /home/mysql/rakidata:/var/lib/mysql:rw
+      -  /home/mysql/oumaimadata:/var/lib/mysql:rw
     networks:
       - foyer
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=projDevOps
+networks:
+  foyer:
