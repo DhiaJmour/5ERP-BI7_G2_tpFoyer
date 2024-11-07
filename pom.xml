@@ -18,6 +18,7 @@
         <sonar.projectKey>5bi7_tpFoyer</sonar.projectKey>
         <sonar.projectName>'5bi7_tpFoyer'</sonar.projectName>
         <sonar.host.url>http://http://192.168.33.10:9000</sonar.host.url>
+        <sonar.jacoco.reportPaths>target/jacoco.exec</sonar.jacoco.reportPaths>
     </properties>
     <dependencies>
 
@@ -100,18 +101,17 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version> <!-- Use the latest version -->
+                <version>0.8.12</version> <!-- Use the latest version -->
                 <executions>
                     <execution>
                         <id>prepare-agent</id> <!-- Unique ID for the first execution -->
-                        <phase>prepare-package</phase> <!-- Generate coverage data during the package phase -->
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>generate-report</id> <!-- Unique ID for the second execution -->
-                        <phase>verify</phase> <!-- Ensure the code coverage report is generated during the verify phase -->
+                        <id>report</id> <!-- Unique ID for the second execution -->
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
