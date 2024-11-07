@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 @NoArgsConstructor
-@ToString
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Etudiant {
 
@@ -29,7 +29,21 @@ public class Etudiant {
 
     @ManyToMany(mappedBy = "etudiants")
     Set<Reservation> reservations;
+    public Etudiant(String nomEtudiant, String prenomEtudiant, long cinEtudiant, Date dateNaissance) {
+        this.nomEtudiant = nomEtudiant;
+        this.prenomEtudiant = prenomEtudiant;
+        this.cinEtudiant = cinEtudiant;
+        this.dateNaissance = dateNaissance;
+    }
 
+    @Override
+    public String toString() {
+        return "Etudiant{id=" + idEtudiant +
+                ", nom=" + nomEtudiant +
+                ", prenom=" + prenomEtudiant +
+                ", cin=" + cinEtudiant +
+                ", dateNaissance=" + dateNaissance + "}";
+    }
 }
 
 
