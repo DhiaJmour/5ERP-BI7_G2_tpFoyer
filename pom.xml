@@ -103,13 +103,15 @@
                 <version>0.8.8</version> <!-- Use the latest version -->
                 <executions>
                     <execution>
-                        <phase>prepare-package</phase> <!-- Generate coverage report after tests -->
+                        <id>prepare-agent</id> <!-- Unique ID for the first execution -->
+                        <phase>prepare-package</phase> <!-- Generate coverage data during the package phase -->
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <phase>verify</phase> <!-- Ensure the code coverage report is generated -->
+                        <id>generate-report</id> <!-- Unique ID for the second execution -->
+                        <phase>verify</phase> <!-- Ensure the code coverage report is generated during the verify phase -->
                         <goals>
                             <goal>report</goal>
                         </goals>
