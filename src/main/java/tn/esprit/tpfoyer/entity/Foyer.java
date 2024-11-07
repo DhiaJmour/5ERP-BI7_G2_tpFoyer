@@ -29,10 +29,13 @@ public class Foyer {
     Universite universite;
 
     @OneToMany(mappedBy = "foyer")
-            @JsonIgnore
-            @ToString.Exclude
+    @JsonIgnore
+    @ToString.Exclude
     Set<Bloc> blocs;
 
+    // Ajout du constructeur personnalisé pour les tests
+    public Foyer(String nomFoyer, long capaciteFoyer) {
+        this.nomFoyer = nomFoyer;
+        this.capaciteFoyer = capaciteFoyer;
+    }
 }
-
-
