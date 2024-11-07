@@ -153,6 +153,14 @@
             <version>2.1.0</version>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>deploymentRepo</id> <!-- ID du repository de déploiement -->
+            <name>Nexus Repository</name> <!-- Nom du repository -->
+            <url>http://localhost:8081/repository/maven-releases/</url> <!-- URL du repository Nexus -->
+        </repository>
+    </distributionManagement>
+
 
     <build>
         <plugins>
