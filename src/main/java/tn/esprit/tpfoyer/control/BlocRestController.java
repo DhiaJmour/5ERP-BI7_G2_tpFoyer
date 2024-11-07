@@ -1,8 +1,8 @@
 package tn.esprit.tpfoyer.control;
 
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+//import io.swagger.v3.oas.annotations.Operation;
+//import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.tpfoyer.entity.Bloc;
@@ -10,7 +10,7 @@ import tn.esprit.tpfoyer.service.IBlocService;
 
 import java.util.List;
 
-@Tag(name = "Gestion Bloc pour l'équipe 4DS9")
+//@Tag(name = "Gestion Bloc pour l'équipe 4DS9")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/bloc")
@@ -22,7 +22,7 @@ public class BlocRestController {
     //http://localhost:8089/tpfoyer/bloc/retrieve-all-blocs
 
     @GetMapping("/retrieve-all-blocs")
-    @Operation(description = "WS de récuperation de tous les Blocs ")
+    //@Operation(description = "WS de récuperation de tous les Blocs ")
     public List<Bloc> getBlocs() {
         return blocService.retrieveAllBlocs();
         //return listBlocs;
