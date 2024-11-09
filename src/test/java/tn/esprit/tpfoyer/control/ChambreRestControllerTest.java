@@ -1,6 +1,9 @@
 package tn.esprit.tpfoyer.control;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -16,8 +19,6 @@ import tn.esprit.tpfoyer.service.IChambreService;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
@@ -133,6 +134,42 @@ class ChambreRestControllerTest {
                 .andExpect(jsonPath("$.numeroChambre").value(chambre.getNumeroChambre()))
                 .andExpect(jsonPath("$.typeC").value(chambre.getTypeC().toString()));
     }
+    @Test
+void testGetOccupationParType() throws Exception {
+    long occupationCount = 5;
+    Mockito.when(chambreService.calculerOccupationParType(eq(TypeChambre.SIMPLE))).thenReturn(occupationCount);
+
+    mockMvc.perform(get("/chambre/occupation-par-type/{type}", TypeChambre.SIMPLE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().string(String.valueOf(occupationCount)));
+}
+
+@Test
+void testFiltrerChambres() throws Exception {
+    List<Chambre> chambres = Arrays.asList(chambre);
+    double prixMax = 500.0;
+    double tailleMin = 15.0;
+    Mockito.when(chambreService.filtrerChambres(prixMax, tailleMin)).thenReturn(chambres);
+
+    mockMvc.perform(get("/chambre/filtrer")
+                    .param("prixMax", String.valueOf(prixMax))
+                    .param("tailleMin", String.valueOf(tailleMin)))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$[0].idChambre").value(chambre.getIdChambre()))
+            .andExpect(jsonPath("$[0].numeroChambre").value(chambre.getNumeroChambre()))
+            .andExpect(jsonPath("$[0].typeC").value(chambre.getTypeC().toString()));
+}
+@Test
+void testRetrieveChambreNotFound() throws Exception {
+    Mockito.when(chambreService.retrieveChambre(anyLong()))
+            .thenThrow(new EntityNotFoundException("Chambre not found"));
+
+    mockMvc.perform(get("/chambre/retrieve-chambre/{chambre-id}", 999L))
+            .andExpect(status().isNotFound());
+}
+
 
     /**
      * Utility method to convert Java objects to JSON string.

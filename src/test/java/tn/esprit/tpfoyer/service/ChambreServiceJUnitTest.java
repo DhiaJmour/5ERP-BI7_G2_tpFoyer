@@ -30,13 +30,20 @@ class ChambreServiceJUnitTest {
     void addChambre() {
         Chambre chambre = new Chambre();
         chambre.setNumeroChambre(101);
-        chambre.setTypeC(TypeChambre.SIMPLE); // Assuming SIMPLE is a valid enum value
+        chambre.setTypeC(TypeChambre.SIMPLE);
 
         Chambre savedChambre = chambreService.addChambre(chambre);
         assertNotNull(savedChambre);
         assertEquals(101, savedChambre.getNumeroChambre());
-        System.out.println("Add Chambre: Ok");
+
+        // Vérifier que la chambre a bien été enregistrée en base de données
+        Chambre foundChambre = chambreRepository.findById(savedChambre.getIdChambre()).orElse(null);
+        assertNotNull(foundChambre);
+        assertEquals(101, foundChambre.getNumeroChambre());
+
+        System.out.println("Add Chambre: Ok"); 
     }
+
 
     @Test
     @Order(2)
@@ -59,19 +66,48 @@ class ChambreServiceJUnitTest {
     @Test
     @Order(4)
     void removeChambre() {
-        chambreService.removeChambre(1L); // Adjust ID as necessary
+         // On suppose que l'ID 1 existe dans la base
+         chambreService.removeChambre(1L); 
+
+         // Vérifier qu'une exception est lancée quand on tente de récupérer une chambre supprimée
         assertThrows(EntityNotFoundException.class, () -> chambreService.retrieveChambre(1L));
+
         System.out.println("Remove Chambre: Ok");
-    }
+}
 
     @Test
     @Order(5)
     void recupererChambresSelonTyp() {
+         // Créer une chambre de type SIMPLE avant de tester
+         Chambre chambre = new Chambre();
+         chambre.setNumeroChambre(102);
+         chambre.setTypeC(TypeChambre.SIMPLE);
+         chambreService.addChambre(chambre);
+
+         // Tester la récupération des chambres de type SIMPLE
         List<Chambre> chambres = chambreService.recupererChambresSelonTyp(TypeChambre.SIMPLE);
         assertNotNull(chambres);
-        assertTrue(chambres.isEmpty());
-        System.out.println("Retrieve Chambres by Type: Ok");
-    }
+        assertFalse(chambres.isEmpty()); // S'assurer qu'il y a des chambres de type SIMPLE
+        assertEquals(TypeChambre.SIMPLE, chambres.get(0).getTypeC()); // Vérifier que le type est SIMPLE
 
+    System.out.println("Retrieve Chambres by Type: Ok");
+}
+   @Test
+   @Order(6)
+   void modifyChambre() {
+        // Créer une chambre de type SIMPLE
+        Chambre chambre = new Chambre();
+        chambre.setNumeroChambre(103);
+        chambre.setTypeC(TypeChambre.SIMPLE);
+        chambreService.addChambre(chambre);
+
+       // Modifier la chambre
+        chambre.setNumeroChambre(104);
+        Chambre modifiedChambre = chambreService.modifyChambre(chambre);
+        assertNotNull(modifiedChambre);
+        assertEquals(104, modifiedChambre.getNumeroChambre()); // Vérifier la modification
+
+      System.out.println("Modify Chambre: Ok");
+}
 
 }

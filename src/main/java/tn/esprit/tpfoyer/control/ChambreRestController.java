@@ -1,11 +1,11 @@
 package tn.esprit.tpfoyer.control;
-
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.tpfoyer.entity.Chambre;
 import tn.esprit.tpfoyer.entity.TypeChambre;
 import tn.esprit.tpfoyer.service.IChambreService;
 import java.util.List;
+
 
 
 @RestController
@@ -62,6 +62,22 @@ public class ChambreRestController {
         return chambreService.trouverchambreSelonEtudiant(cin);
        
     }
+
+    // http://localhost:8089/tpfoyer/chambre/occupation-par-type/SIMPLE
+@GetMapping("/occupation-par-type/{type}")
+public long getOccupationParType(@PathVariable("type") TypeChambre type) {
+    return chambreService.calculerOccupationParType(type);
+}
+
+
+// http://localhost:8089/tpfoyer/chambre/filtrer?prixMax=500&tailleMin=15
+@GetMapping("/filtrer")
+public List<Chambre> filtrerChambres(
+        @RequestParam("prixMax") double prixMax,
+        @RequestParam("tailleMin") double tailleMin) {
+    return chambreService.filtrerChambres(prixMax, tailleMin);
+}
+
 
 
 }

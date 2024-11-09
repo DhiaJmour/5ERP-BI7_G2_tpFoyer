@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class ChambreServiceMockitoTest {
@@ -45,7 +46,7 @@ class ChambreServiceMockitoTest {
         // Assert
         assertNotNull(savedChambre);
         assertEquals(101, savedChambre.getNumeroChambre());
-        verify(chambreRepository, times(1)).save(chambre);
+        verify(chambreRepository, times(1)).save(argThat(ch -> ch.getNumeroChambre() == 101));
     }
 
     @Test
@@ -108,11 +109,34 @@ class ChambreServiceMockitoTest {
     }
 
     @Test
+    void modifyChambre_NotFound() {
+        // Arrange
+        Chambre chambre = new Chambre();
+        chambre.setIdChambre(1L);
+        chambre.setNumeroChambre(102);
+
+        when(chambreRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(EntityNotFoundException.class, () -> chambreService.modifyChambre(chambre));
+    }
+
+    @Test
     void removeChambre() {
         // Act
         chambreService.removeChambre(1L);
 
         // Assert
+        verify(chambreRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void removeChambre_NotFound() {
+        // Arrange
+        doThrow(new EntityNotFoundException("Chambre not found")).when(chambreRepository).deleteById(1L);
+
+        // Act & Assert
+        assertThrows(EntityNotFoundException.class, () -> chambreService.removeChambre(1L));
         verify(chambreRepository, times(1)).deleteById(1L);
     }
 
@@ -132,6 +156,20 @@ class ChambreServiceMockitoTest {
         assertEquals(2, retrievedChambres.size());
         verify(chambreRepository, times(1)).findAllByTypeC(TypeChambre.SIMPLE);
     }
+
+    @Test
+    void recupererChambresSelonTyp_EmptyList() {
+        // Arrange
+        when(chambreRepository.findAllByTypeC(TypeChambre.SIMPLE)).thenReturn(new ArrayList<>());
+
+        // Act
+        List<Chambre> retrievedChambres = chambreService.recupererChambresSelonTyp(TypeChambre.SIMPLE);
+
+        // Assert
+        assertNotNull(retrievedChambres);
+        assertTrue(retrievedChambres.isEmpty());
+    }
+
     @Test
     void trouverChambreSelonEtudiant() {
         // Arrange
@@ -151,5 +189,4 @@ class ChambreServiceMockitoTest {
         assertEquals(101, retrievedChambre.getNumeroChambre());
         verify(chambreRepository, times(1)).trouverChselonEt(cin);
     }
-
 }

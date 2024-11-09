@@ -76,6 +76,14 @@ public interface ChambreRepository extends JpaRepository<Chambre, Long> {
 
 
 
+// Compter toutes les chambres d'un certain type
+long countByTypeC(TypeChambre typeC);
+
+// Compter les chambres d'un type donné qui sont disponibles
+long countByTypeCAndDisponible(TypeChambre typeC, boolean disponible);
+
+// Rechercher les chambres avec un prix inférieur ou égal au prixMax et une taille supérieure ou égale à tailleMin
+List<Chambre> findByPrixLessThanEqualAndTailleGreaterThanEqual(double prixMax, double tailleMin);
 
 
 

@@ -1,6 +1,5 @@
 package tn.esprit.tpfoyer.service;
 
-
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,7 @@ public class ChambreServiceImpl implements IChambreService {
     ChambreRepository chambreRepository;
 
     public List<Chambre> retrieveAllChambres() {
-        log.info("In Methodo retrieveAllChambres : ");
+        log.info("In Method retrieveAllChambres : ");
         List<Chambre> listC = chambreRepository.findAll();
         log.info("Out of retrieveAllChambres : ");
         return listC;
@@ -31,32 +30,33 @@ public class ChambreServiceImpl implements IChambreService {
 
     public Chambre addChambre(Chambre c) {
         return chambreRepository.save(c);
-
     }
 
     public Chambre modifyChambre(Chambre c) {
-        return  chambreRepository.save(c);
-
+        return chambreRepository.save(c);
     }
 
     public void removeChambre(Long chambreId) {
         chambreRepository.deleteById(chambreId);
     }
 
-
-
-
-
-
-
-    public List<Chambre> recupererChambresSelonTyp(TypeChambre tc)
-    {
+    public List<Chambre> recupererChambresSelonTyp(TypeChambre tc) {
         return chambreRepository.findAllByTypeC(tc);
     }
 
     public Chambre trouverchambreSelonEtudiant(long cin) {
-       //
-
         return chambreRepository.trouverChselonEt(cin);
+    }
+
+    // Nouvelle méthode : Calculer l'occupation par type de chambre
+    public long calculerOccupationParType(TypeChambre typeC) {
+        long totalChambres = chambreRepository.countByTypeC(typeC);
+        long chambresDisponibles = chambreRepository.countByTypeCAndDisponible(typeC, true);
+        return totalChambres - chambresDisponibles;
+    }
+
+    // Nouvelle méthode : Filtrer les chambres par prix et taille
+    public List<Chambre> filtrerChambres(double prixMax, double tailleMin) {
+        return chambreRepository.findByPrixLessThanEqualAndTailleGreaterThanEqual(prixMax, tailleMin);
     }
 }

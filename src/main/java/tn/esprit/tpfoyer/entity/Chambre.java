@@ -25,7 +25,18 @@ public class Chambre {
 
     @Enumerated(EnumType.STRING)
     TypeChambre typeC;
+    
+     //new
+    @Column(nullable = false)
+    boolean disponible = true;
 
+    @Column(nullable = false)
+    double prix;
+
+    @Column(nullable = false)
+    double taille;
+
+    
 
 
     @OneToMany
@@ -33,5 +44,8 @@ public class Chambre {
 
     @ManyToOne(cascade = CascadeType.ALL)
     Bloc bloc;
+
+
+  
 
 }
