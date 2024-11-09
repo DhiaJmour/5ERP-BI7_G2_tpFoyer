@@ -41,6 +41,7 @@ class ChambreRestControllerTest {
 
     @BeforeEach
     void setUp() {
+        //init
         // Initialize mock Chambre object
         chambre = new Chambre();
         chambre.setIdChambre(1L);
