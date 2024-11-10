@@ -42,13 +42,13 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
-      - 9090:9090
+      - 9091:9090
 
   grafana:
     image: grafana/grafana  # Image officielle de Grafana
     container_name: grafana-container  # Nom du conteneur
     ports:
-      - "3000:3000"  # Mappe le port 3000 du conteneur au port 3000 de l'hôte
+      - "3001:3000"  # Mappe le port 3000 du conteneur au port 3000 de l'hôte
 
 volumes:
   db:  # Volume nommé pour le stockage persistant de MySQL
