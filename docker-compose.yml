@@ -1,7 +1,54 @@
-version: "3"
+version: "3.8"
+
 services:
-  springboot-app:
-    image: springboot-app
-    build: .
+  mysqldb:
+    image: mysql:5.7  # Image officielle de MySQL version 5.7
+    container_name: mysqldb-container  # Nom du conteneur pour la base de données
+    restart: unless-stopped  # Redémarre le conteneur sauf en cas d'arrêt manuel
+    environment:
+      - MYSQL_ROOT_PASSWORD=root  # Mot de passe root de la base de données
+      - MYSQL_DATABASE=foyer  # Nom de la base de données à créer
     ports:
-      - 8080:8080
+      - "3306:3306"  # Mappe le port 3306 du conteneur au port 3306 de l'hôte
+    volumes:
+      - db:/var/lib/mysql  # Stockage persistant des données MySQL
+
+  app-foyer:
+    build:
+      context: .  # Répertoire de construction du projet
+      dockerfile: Dockerfile  # Fichier Dockerfile à utiliser
+    image: dhiaezzine/app-foyer:1.0.0  # Image construite avec un tag spécifique
+    container_name: app-foyer-container  # Nom du conteneur de l'application
+    depends_on:
+      - mysqldb  # Indique que ce service dépend de la base de données
+    restart: on-failure  # Redémarre en cas d'échec
+    ports:
+      - "8082:8082"  # Mappe le port 8082 du conteneur au port 8082 de l'hôte
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:mysql://mysqldb:3306/foyer",
+        "spring.datasource.username": "root",
+        "spring.datasource.password": "root",
+        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL8Dialect",
+        "spring.jpa.hibernate.ddl-auto": "update"
+      }'
+    stdin_open: true  # Maintient l'entrée standard ouverte (utile pour les tests interactifs)
+    tty: true  # Alloue un pseudo-TTY
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana  # Image officielle de Grafana
+    container_name: grafana-container  # Nom du conteneur
+    ports:
+      - "3000:3000"  # Mappe le port 3000 du conteneur au port 3000 de l'hôte
+
+volumes:
+  db:  # Volume nommé pour le stockage persistant de MySQL
