@@ -22,7 +22,7 @@ public class BlocServiceImpl  implements IBlocService {
 
     //@Scheduled(fixedRate = 30000) // millisecondes // cron fixedRate
     //@Scheduled(cron="0/15 * * * * *")
-    public List<Bloc> retrieveAllBlocs() {
+    /*public List<Bloc> retrieveAllBlocs() {
 
         List<Bloc> listB = blocRepository.findAll();
         log.info("taille totale : " + listB.size());
@@ -31,7 +31,7 @@ public class BlocServiceImpl  implements IBlocService {
         }
 
         return listB;
-    }
+    }*/
 
     // Exemple sans Keywords :
     public List<Bloc> retrieveBlocsSelonCapacite(long c) {

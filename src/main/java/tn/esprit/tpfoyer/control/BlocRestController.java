@@ -21,12 +21,12 @@ public class BlocRestController {
 
     //http://localhost:8089/tpfoyer/bloc/retrieve-all-blocs
 
-    @GetMapping("/retrieve-all-blocs")
+   /* @GetMapping("/retrieve-all-blocs")
     @Operation(description = "WS de récuperation de tous les Blocs ")
     public List<Bloc> getBlocs() {
         return blocService.retrieveAllBlocs();
         //return listBlocs;
-    }
+    }*/
 
 
     // http://localhost:8089/tpfoyer/bloc/retrieve-bloc/8
