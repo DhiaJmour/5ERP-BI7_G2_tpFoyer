@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 class FoyerServiceImplTest {
 
+    /*
     @Test
     void retrieveAllFoyers() {
     }
@@ -24,4 +25,6 @@ class FoyerServiceImplTest {
     @Test
     void removeFoyer() {
     }
+    */
+
 }
