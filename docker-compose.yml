@@ -35,20 +35,6 @@ services:
     stdin_open: true  # Maintient l'entrée standard ouverte (utile pour les tests interactifs)
     tty: true  # Alloue un pseudo-TTY
 
-  prometheus:
-    image: prom/prometheus
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
-    ports:
-      - 9091:9090
-
-  grafana:
-    image: grafana/grafana  # Image officielle de Grafana
-    container_name: grafana-container  # Nom du conteneur
-    ports:
-      - "3001:3000"  # Mappe le port 3000 du conteneur au port 3000 de l'hôte
 
 volumes:
   db:  # Volume nommé pour le stockage persistant de MySQL
