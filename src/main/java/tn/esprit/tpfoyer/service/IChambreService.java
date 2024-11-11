@@ -18,4 +18,7 @@ public interface IChambreService {
 
     public List<Chambre> recupererChambresSelonTyp(TypeChambre tc);
 
+    long calculerOccupationParType(TypeChambre type);
+
+    List<Chambre> filtrerChambres(double prixMax, double tailleMin);
 }

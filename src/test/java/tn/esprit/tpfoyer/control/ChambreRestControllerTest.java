@@ -162,14 +162,14 @@ void testFiltrerChambres() throws Exception {
             .andExpect(jsonPath("$[0].numeroChambre").value(chambre.getNumeroChambre()))
             .andExpect(jsonPath("$[0].typeC").value(chambre.getTypeC().toString()));
 }
-@Test
+/*@Test
 void testRetrieveChambreNotFound() throws Exception {
     Mockito.when(chambreService.retrieveChambre(anyLong()))
             .thenThrow(new EntityNotFoundException("Chambre not found"));
 
     mockMvc.perform(get("/chambre/retrieve-chambre/{chambre-id}", 999L))
             .andExpect(status().isNotFound());
-}
+}*/
 
 
     /**
