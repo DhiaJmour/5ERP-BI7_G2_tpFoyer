@@ -20,7 +20,7 @@ public class BlocServiceImpl  implements IBlocService {
 
     BlocRepository blocRepository;
 
-    @Scheduled(fixedRate = 30000) // millisecondes // cron fixedRate
+    //@Scheduled(fixedRate = 30000) // millisecondes // cron fixedRate
     //@Scheduled(cron="0/15 * * * * *")
     public List<Bloc> retrieveAllBlocs() {
 
@@ -34,7 +34,6 @@ public class BlocServiceImpl  implements IBlocService {
     }
 
     // Exemple sans Keywords :
-    @Transactional
     public List<Bloc> retrieveBlocsSelonCapacite(long c) {
 
         List<Bloc> listB = blocRepository.findAll();
@@ -48,10 +47,10 @@ public class BlocServiceImpl  implements IBlocService {
         return listBselonC;
     }
 
-    @Transactional
+    @Override
     public Bloc retrieveBloc(Long blocId) {
 
-        return blocRepository.findById(blocId).get();
+        return blocRepository.findById(blocId).orElse(null);
     }
 
 
