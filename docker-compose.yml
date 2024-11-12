@@ -23,9 +23,8 @@ services:
      "spring.datasource.url": "jdbc:mysql://mysqlDb:3306/foyer?createDatabaseIfNotExist=true",
      "spring.datasource.username": "root",
      "spring.datasource.password": "root",
-     "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL8Dialect",
-     "spring.jpa.hibernate.ddl-auto": "up
-     date"
+     "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQLDialect",
+     "spring.jpa.hibernate.ddl-auto": "update"
    }'
     stdin_open: true
     tty: true
