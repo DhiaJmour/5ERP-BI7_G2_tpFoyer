@@ -1,25 +1,32 @@
-version: '3'
+version: "3.8"
+
 services:
-  app:
-    build: .
+  spring-app:
+    image: dhiaezzine/app-foyer:1.0.0
+    container_name: app-foyer-container
     ports:
-      - "8082:8082"
-    networks:
-      - mynetwork
+      - "8082:8082"  # Map le port 8082 du conteneur au port 8082 de la machine hôte
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/5ERP-BI7_G2_tpFoyer?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: my-secret-pw
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
     depends_on:
-      - db
-  db:
+      - mysql-db  # L'application dépend du service mysql-db
+    restart: on-failure  # Redémarre le conteneur en cas d'échec
+
+  mysql-db:
     image: mysql:8
+    container_name: mysql-container
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
-      MYSQL_DATABASE: 5ERP-BI7_G2_tpFoyer
+      MYSQL_DATABASE: 5ERP-BI7_G2_tpFoyer  # Nom de la base de données
+    ports:
+      - "3306:3306"  # Map le port 3306 du conteneur au port 3306 de la machine hôte
     volumes:
-      - mysql-data:/var/lib/mysql
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
+      - mysql-data:/var/lib/mysql  # Persiste les données de la base de données
+    restart: unless-stopped  # Redémarre le conteneur si nécessaire
 
 volumes:
-  mysql-data:
+  mysql-data:  # Volume persistant pour les données de MySQL
