@@ -1,8 +1,11 @@
 global:
-  scrape_interval: 15s  # Fréquence de récupération des métriques (toutes les 15 secondes)
+  scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'spring-boot-app'
-    metrics_path: '/actuator/prometheus'  # Le chemin où Prometheus récupère les métriques
+  - job_name: 'spring-tpfoyer'
     static_configs:
-      - targets: ['app-foyer:8082']  # Nom du service Docker et son port (assurez-vous que c'est correct)
+      - targets: ['spring-tpfoyer:8082']
+
+  - job_name: 'mysqldb'
+    static_configs:
+      - targets: ['mysqldb:3306']
