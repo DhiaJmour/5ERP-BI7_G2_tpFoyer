@@ -5,7 +5,7 @@ services:
     image: dhiaezzine/app-foyer:1.0.0
     container_name: app-foyer-container
     ports:
-      - "8089:8089"  # Map le port 8082 du conteneur au port 8082 de la machine hôte
+      - "8089:8089"  # Map le port 8089 du conteneur au port 8089 de la machine hôte
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/5ERP-BI7_G2_tpFoyer?&createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
@@ -28,5 +28,27 @@ services:
       - mysql-data:/var/lib/mysql  # Persiste les données de la base de données
     restart: unless-stopped  # Redémarre le conteneur si nécessaire
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-container
+    ports:
+      - "9090:9090"  # Accès à Prometheus sur le port 9090
+    volumes:
+      - prometheus-data:/prometheus  # Persiste les données de Prometheus
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Le fichier de configuration de Prometheus
+    restart: unless-stopped  # Redémarre le conteneur si nécessaire
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-container
+    ports:
+      - "3000:3000"  # Accès à Grafana sur le port 3000
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin  # Définir le mot de passe administrateur de Grafana
+    depends_on:
+      - prometheus  # Grafana dépend de Prometheus
+    restart: unless-stopped  # Redémarre le conteneur si nécessaire
+
 volumes:
   mysql-data:  # Volume persistant pour les données de MySQL
+  prometheus-data:  # Volume persistant pour les données de Prometheus
