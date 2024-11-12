@@ -14,7 +14,7 @@
       app-foyer:
         depends_on:
           - mysqlDb
-        image: rrihem/tpfoyer
+        image: rrihem/tpfoyer:1.0.0
         restart: on-failure
         ports:
           - "8089:8089"
