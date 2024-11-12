@@ -7,7 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.4</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
     <groupId>tn.esprit</groupId>
@@ -41,6 +41,20 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
+        <!-- Example dependency for Proethure -->
+        <dependency>
+            <groupId>com.proethure</groupId>
+            <artifactId>proethure-library</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <!-- Example dependency for GranaFan -->
+        <dependency>
+            <groupId>com.granafan</groupId>
+            <artifactId>granafan-library</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
         <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -55,117 +69,26 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit 5 dependencies -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Pour JUnit Vintage si vous souhaitez exécuter des tests JUnit 4 avec JUnit 5 -->
-        <dependency>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-            <version>5.8.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- REST Assured for Functional Testing -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.4.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Testcontainers for Integration Testing -->
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>1.20.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>1.20.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Cucumber for Acceptance Testing -->
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-java</artifactId>
-            <version>7.18.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.cucumber</groupId>
-            <artifactId>cucumber-junit</artifactId>
-            <version>7.18.1</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- OWASP Dependency Check for Security Testing -->
-        <dependency>
-            <groupId>org.owasp</groupId>
-            <artifactId>dependency-check-maven</artifactId>
-            <version>9.0.8</version>
-        </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.32</version> <!-- Use a version compatible with your project -->
-        </dependency>
-
-
-        <!-- Gatling for Performance Testing -->
-        <dependency>
-            <groupId>io.gatling.highcharts</groupId>
-            <artifactId>gatling-charts-highcharts</artifactId>
-            <version>3.11.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.gatling</groupId>
-            <artifactId>gatling-test-framework</artifactId>
-            <version>3.11.2</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- SpringDoc for API Documentation -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.1.0</version>
-        </dependency>
+        <!-- Other existing dependencies go here -->
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>custom-repo</id>
+            <url>http://your.custom.repository/repository/maven-releases/</url>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
-            <id>deploymentRepo</id> <!-- ID du repository de déploiement -->
-            <name>Nexus Repository</name> <!-- Nom du repository -->
-            <url>http://localhost:8081/repository/maven-releases/</url> <!-- URL du repository Nexus -->
+            <id>deploymentRepo</id>
+            <name>Nexus Repository</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
-
     <build>
         <plugins>
-            <!-- Maven Surefire Plugin for Unit and Integration Tests -->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -178,8 +101,6 @@
                     </includes>
                 </configuration>
             </plugin>
-
-            <!-- Maven Failsafe Plugin for Integration and Acceptance Tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -194,8 +115,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- OWASP Dependency Check Plugin -->
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
