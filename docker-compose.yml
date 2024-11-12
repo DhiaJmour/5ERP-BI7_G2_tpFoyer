@@ -1,40 +1,26 @@
 version: "3.8"
 
 services:
-  mysqldb:
-    image: mysql:5.7  # Image officielle de MySQL version 5.7
-    container_name: mysqldb-container  # Nom du conteneur pour la base de données
-    restart: unless-stopped  # Redémarre le conteneur sauf en cas d'arrêt manuel
-    environment:
-      - MYSQL_ROOT_PASSWORD=root  # Mot de passe root de la base de données
-      - MYSQL_DATABASE=foyer  # Nom de la base de données à créer
+  spring-tpfoyer:
+    image: dhiaezzine/app-foyer:1.0.0
+    container_name: app-foyer-container-${HOSTNAME}
     ports:
-      - "3306:3306"  # Mappe le port 3306 du conteneur au port 3306 de l'hôte
-    volumes:
-      - db:/var/lib/mysql  # Stockage persistant des données MySQL
-
-  app-foyer:
-    build:
-      context: .  # Répertoire de construction du projet
-      dockerfile: Dockerfile  # Fichier Dockerfile à utiliser
-    image: dhiaezzine/app-foyer:1.0.0  # Image construite avec un tag spécifique
-    container_name: app-foyer-container  # Nom du conteneur de l'application
+      - "8089:8089"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/foyer
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     depends_on:
-      - mysqldb  # Indique que ce service dépend de la base de données
-    restart: on-failure  # Redémarre en cas d'échec
-    ports:
-      - "8082:8082"  # Mappe le port 8082 du conteneur au port 8082 de l'hôte
+      - mysqldb
+    restart: on-failure
+
+  mysqldb:
+    image: mysql:8
+    container_name: mysqldb-container-${HOSTNAME}
+    volumes:
+      - /home/mysql/dhiaezzine:/var/lib/mysql:rw
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url": "jdbc:mysql://mysqldb:3306/foyer",
-        "spring.datasource.username": "root",
-        "spring.datasource.password": "root",
-        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQL8Dialect",
-        "spring.jpa.hibernate.ddl-auto": "update"
-      }'
-    stdin_open: true  # Maintient l'entrée standard ouverte (utile pour les tests interactifs)
-    tty: true  # Alloue un pseudo-TTY
-
-
-volumes:
-  db:  # Volume nommé pour le stockage persistant de MySQL
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=foyer
