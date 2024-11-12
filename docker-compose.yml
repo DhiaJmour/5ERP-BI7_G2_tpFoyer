@@ -1,34 +1,25 @@
-version: "3.8"
-
+version: '3'
 services:
-  mysqlDb:
-    image: mysql:5.7
-    restart: unless-stopped  # This ensures the MySQL container restarts automatically if it fails
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=foyer
+  app:
+    build: .
     ports:
-      - "3306:3306"  # Exposes MySQL on port 3306
-    volumes:
-      - db:/var/lib/mysql  # Persist data in the 'db' volume
-
-  app-foyer:
+      - "8082:8082"
+    networks:
+      - mynetwork
     depends_on:
-      - mysqlDb  # Ensures the app starts after MySQL is available
-    image: dhiaezzine/shopping:1.0.0
-    restart: on-failure  # Restart the container if it fails
-    ports:
-      - "8089:8089"  # Exposes the app on port 8089
+      - db
+  db:
+    image: mysql:8
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url": "jdbc:mysql://mysqlDb:3306/foyer?createDatabaseIfNotExist=true", 
-        "spring.datasource.username": "root",
-        "spring.datasource.password": "root", 
-        "spring.jpa.properties.hibernate.dialect": "org.hibernate.dialect.MySQLDialect",
-        "spring.jpa.hibernate.ddl-auto": "update"
-      }'
-    stdin_open: true  # Keeps STDIN open for interactive sessions
-    tty: true  # Allocates a TTY (useful for debugging)
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: 5ERP-BI7_G2_tpFoyer
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
 
 volumes:
-  db:  # Declare a named volume 'db' to persist MySQL data
+  mysql-data:
