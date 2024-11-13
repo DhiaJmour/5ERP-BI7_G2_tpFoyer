@@ -5,3 +5,7 @@ scrape_configs:
   - job_name: 'grafana'
     static_configs:
       - targets: ['grafana:3000']
+
+  - job_name: 'spring-boot'
+    static_configs:
+      - targets: ['192.168.33.10:8089/tpfoyer/actuator/prometheus']
