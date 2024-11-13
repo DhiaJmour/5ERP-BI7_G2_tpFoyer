@@ -1,6 +1,8 @@
 package tn.esprit.tpfoyer.control;
 
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.tpfoyer.entity.Etudiant;
 import tn.esprit.tpfoyer.service.IEtudiantService;
@@ -14,6 +16,7 @@ import java.util.List;
 public class EtudiantRestController {
 
     IEtudiantService etudiantService;
+    private static final Logger logger = LogManager.getLogger(EtudiantRestController.class);
 
 
     @GetMapping("/retrieve-all-etudiants")
@@ -21,15 +24,6 @@ public class EtudiantRestController {
         List<Etudiant> listEtudiants = etudiantService.retrieveAllEtudiants();
         return listEtudiants;
     }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -64,6 +58,12 @@ public class EtudiantRestController {
     public Etudiant modifyEtudiant(@RequestBody Etudiant c) {
         Etudiant etudiant = etudiantService.modifyEtudiant(c);
         return etudiant;
+    }
+    @GetMapping("/test")
+    public String testLog() {
+        logger.info("Info log for testing Log4j2");
+        logger.debug("Debug log for more detailed info");
+        return "Check logs";
     }
 
 
